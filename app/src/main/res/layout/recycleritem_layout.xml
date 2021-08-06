@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_img_border"
+        android:layout_margin="@dimen/dp_20">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgView"
+            android:layout_width="@dimen/dp_300"
+            android:layout_height="@dimen/dp_200"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/dp_10"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:transitionName="image"
+            android:layout_marginBottom="@dimen/dp_10"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nameTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgView"
+            android:layout_marginStart="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_60"
+            android:textSize="@dimen/sp_22"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nanum_square_b"
+            tools:text = "계산 사천성" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/typeTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/nameTxtView"
+            app:layout_constraintStart_toStartOf="@+id/nameTxtView"
+            android:textSize="@dimen/sp_22"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nanum_square_b"
+            tools:text = "계산 사천성" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/progressTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/typeTxtView"
+            app:layout_constraintStart_toStartOf="@+id/typeTxtView"
+            android:textSize="@dimen/sp_22"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nanum_square_b"
+            tools:text = "계산 사천성" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

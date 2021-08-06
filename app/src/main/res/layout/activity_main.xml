@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activity.LoginActivity">
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="activity"
+            type="com.example.getcontents.activity.MainActivity" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:background="@color/black">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/userNameTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_50"
+            android:layout_marginStart="@dimen/dp_270"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/nanum_square_eb"
+            android:textSize="@dimen/sp_40"
+            android:textColor="#3FB5B5"
+            tools:text="김진아, "
+            app:layout_constraintEnd_toStartOf="@+id/hiTxtView"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/hiTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_5"
+            app:layout_constraintStart_toEndOf="@+id/userNameTxtView"
+            app:layout_constraintTop_toTopOf="@+id/userNameTxtView"
+            android:fontFamily="@font/nanum_square_b"
+            android:textSize="@dimen/sp_40"
+            android:textColor="#C0C8F6"
+            android:text="반갑습니다."
+            />
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cardLayout"
+            android:layout_width="@dimen/dp_600"
+            android:layout_height="@dimen/dp_600"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/dp_30"
+            android:onClick="@{activity::onClick}"
+            android:background="@drawable/btn_color">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/infoTxtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="과제 카드"
+                android:fontFamily="@font/maplestory_oft_bold"
+                android:textColor="#B0FFFF"
+                android:textSize="@dimen/sp_70"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="@dimen/dp_30"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/nameTxtView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이름:"
+                android:fontFamily="@font/maplestory_oft_light"
+                android:textColor="#B0FFFF"
+                android:textSize="@dimen/sp_50"
+                app:layout_constraintTop_toBottomOf="@+id/infoTxtView"
+                app:layout_constraintStart_toStartOf="@+id/infoTxtView"
+                android:layout_marginTop="@dimen/dp_80"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/nameTxtView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="진아님"
+                android:fontFamily="@font/maplestory_oft_light"
+                android:textColor="#B0FFFF"
+                android:textSize="@dimen/sp_50"
+                app:layout_constraintTop_toTopOf="@+id/nameTxtView1"
+                app:layout_constraintStart_toEndOf="@+id/nameTxtView1"
+                android:layout_marginStart="@dimen/dp_20"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/startTxtView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시작 날짜:"
+                android:fontFamily="@font/maplestory_oft_light"
+                android:textColor="#B0FFFF"
+                android:textSize="@dimen/sp_50"
+                app:layout_constraintTop_toBottomOf="@+id/nameTxtView1"
+                app:layout_constraintStart_toStartOf="@+id/nameTxtView1"
+                android:layout_marginTop="@dimen/dp_20"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/startTxtView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/maplestory_oft_light"
+                android:textColor="#B0FFFF"
+                android:textSize="@dimen/sp_45"
+                app:layout_constraintTop_toTopOf="@+id/startTxtView1"
+                app:layout_constraintStart_toEndOf="@+id/startTxtView1"
+                android:layout_marginStart="@dimen/dp_20"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/endTxtView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="끝나는 날짜:"
+                android:fontFamily="@font/maplestory_oft_light"
+                android:textColor="#B0FFFF"
+                android:textSize="@dimen/sp_50"
+                app:layout_constraintTop_toBottomOf="@+id/startTxtView1"
+                app:layout_constraintStart_toStartOf="@+id/startTxtView1"
+                android:layout_marginTop="@dimen/dp_20"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/endTxtView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/maplestory_oft_light"
+                android:textColor="#B0FFFF"
+                android:textSize="@dimen/sp_45"
+                app:layout_constraintTop_toTopOf="@+id/endTxtView1"
+                app:layout_constraintStart_toEndOf="@+id/endTxtView1"
+                android:layout_marginStart="@dimen/dp_20"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/infoIconImgView"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            android:background="@drawable/icon_game_howmuch_005"
+            app:layout_constraintStart_toStartOf="@+id/cardLayout"
+            app:layout_constraintTop_toBottomOf="@+id/cardLayout"
+            app:layout_constraintEnd_toStartOf="@+id/infoListTxtView"
+            android:layout_marginTop="@dimen/dp_40"
+            android:layout_marginEnd="@dimen/dp_10"
+             />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/infoListTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/infoIconImgView"
+            app:layout_constraintBottom_toBottomOf="@+id/infoIconImgView"
+            app:layout_constraintStart_toEndOf="@+id/infoIconImgView"
+            app:layout_constraintEnd_toEndOf="@+id/cardLayout"
+            android:textSize="@dimen/sp_26"
+            android:fontFamily="@font/nanum_square_b"
+            android:textColor="@color/white"
+            android:text="과제 카드를 누르면 과제 리스트를 볼 수 있습니다."
+            />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/screenView"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activity.LoginActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:background="@color/black">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/loginTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="과제\n확인하기"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/dp_100"
+            android:textSize="@dimen/sp_100"
+
+            android:layout_marginStart="@dimen/dp_20"
+            android:fontFamily="@font/maplestory_oft_bold"
+            android:textColor="#3FB5B5"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="@dimen/dp_600"
+            android:layout_height="@dimen/dp_100"
+            app:layout_constraintTop_toBottomOf="@+id/loginTxtView"
+            android:layout_marginTop="@dimen/dp_100"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:errorEnabled="true"
+            app:boxBackgroundColor="#B0FFFF"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputTxtView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="아이디를 입력해주세요."/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            app:passwordToggleEnabled="true"
+            android:layout_width="@dimen/dp_600"
+            android:layout_height="@dimen/dp_100"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout1"
+            android:layout_marginTop="@dimen/dp_50"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:errorEnabled="true"
+            app:boxBackgroundColor="#B0FFFF">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputTxtView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="비밀번호를 입력해주세요."
+                android:inputType="textPassword"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/loginBtn"
+            android:layout_width="@dimen/dp_600"
+            android:layout_height="@dimen/dp_90"
+            android:text="로그인"
+            android:fontFamily="@font/maplestory_oft_bold"
+            android:textColor="#B0FFFF"
+            android:textSize="@dimen/sp_50"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/dp_200"
+            android:background="@drawable/btn_color"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/screenView"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
