@@ -1,12 +1,13 @@
 package com.example.getcontents.activity
 
-import android.content.Context
+import TokenAuthenticator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.example.getcontents.App
+import com.example.getcontents.App.Companion.sharedPref
 
 import com.example.getcontents.R
 import com.example.getcontents.databinding.ActivityLoginBinding
@@ -14,7 +15,7 @@ import com.example.getcontents.extensions.Extensions.startActivityWithFinish
 import com.example.getcontents.login.*
 import com.example.getcontents.network.*
 import com.example.getcontents.storage.SharedPref
-import com.google.firebase.messaging.FirebaseMessaging
+import com.example.getcontents.token.ReissueTokenInterface
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -25,9 +26,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
     private var newToken: String? = null
+    private fun provideGson() = Gson()
     val gson = Gson()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +38,8 @@ class LoginActivity : AppCompatActivity() {
         binding.apply {
             lifecycleOwner = this@LoginActivity
         }
-
         binding.loginBtn.setOnClickListener(this::onClick)
-
+        sharedPref.checkToken(SharedPref.PREF_KEEP_LOGIN_TOKEN, this)
     }
 
     private fun onClick(view: View) {
@@ -64,29 +65,28 @@ class LoginActivity : AppCompatActivity() {
                             val result = response.body()!!.result
                             Log.e("access", result.access)
                             Log.e("refresh", result.refresh)
-                            SharedPref.apply {
-                                App.sharedPref.storedToken(
-                                    PREF_KEEP_LOGIN_TOKEN,
+                            sharedPref.apply {
+                                sharedPref.storedToken(
+                                    SharedPref.PREF_KEEP_LOGIN_TOKEN,
                                     result.access
                                 )
 
-                                App.sharedPref.storedToken(
-                                    PREF_REFRESH_LOGIN_TOKEN,
+                                sharedPref.storedToken(
+                                    SharedPref.PREF_REFRESH_LOGIN_TOKEN,
                                     result.refresh
                                 )
 
-                                App.sharedPref.putString(
-                                    PREF_USER_INFO,
+                                sharedPref.putString(
+                                    SharedPref.PREF_USER_INFO,
                                     gson.toJson(result.user)
                                 )
 
-
                                 startActivityWithFinish(MainActivity::class.java)
                             }
-                        }else if (response.toString().contains("401")){
+                        } else if (response.toString().contains("401")) {
                             val dialog = AlertDialog.Builder(this@LoginActivity)
                             dialog.setMessage("아이디 또는 비밀번호를 확인해주세요.")
-                            dialog.setPositiveButton("확인",null)
+                            dialog.setPositiveButton("확인", null)
                             dialog.show()
                         }
 
@@ -106,7 +106,31 @@ class LoginActivity : AppCompatActivity() {
 
         }
     }
+    fun provideHttpService(tokenAuthenticator: TokenAuthenticator): ReissueTokenInterface{
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(provideGson()))
+            .addConverterFactory(NullOnEmptyConverterFactory())
+            .client(provideOkHttpClient(tokenAuthenticator))
+            .build()
+            .create(ReissueTokenInterface::class.java)
+    }
 
+    fun provideReissueTokenService(): ReissueTokenInterface {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(provideGson()))
+            .addConverterFactory(NullOnEmptyConverterFactory())
+            .build()
+            .create(ReissueTokenInterface::class.java)
+    }
+
+    fun provideOkHttpClient(tokenAuthenticatorV2: TokenAuthenticator): OkHttpClient = OkHttpClient
+        .Builder()
+        .authenticator(tokenAuthenticatorV2) // Called when access token or refresh token expired
+        //.addNetworkInterceptor(AuthenticationInterceptor()) 헤더설정하는 Interceptor ,, 현재는 사용 x
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .build()
     companion object {
         private const val BASE_URL = "https://api.super-brain.co.kr/"
     }

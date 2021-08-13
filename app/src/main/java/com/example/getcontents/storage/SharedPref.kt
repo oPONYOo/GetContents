@@ -2,6 +2,13 @@ package com.example.getcontents.storage
 
 import android.content.Context
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.example.getcontents.activity.BaseActivity
+import com.example.getcontents.activity.LoginActivity
+import com.example.getcontents.activity.MainActivity
+import com.example.getcontents.activity.SplashActivity
+import com.example.getcontents.extensions.Extensions.startActivity
+import com.example.getcontents.extensions.Extensions.startActivityWithFinish
 
 class SharedPref(context: Context) {
     companion object {
@@ -20,7 +27,7 @@ class SharedPref(context: Context) {
     private val sharedPreferences =
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-     fun storedToken(key: String, set: String) {
+    fun storedToken(key: String, set: String) {
         val editor = sharedPreferences.edit()
         editor.putString(key, set)
         editor.apply()
@@ -37,4 +44,19 @@ class SharedPref(context: Context) {
     fun getToken(key: String): String = sharedPreferences!!.getString(key, "empty")!!
 
 
+    fun checkToken(key: String, activity: BaseActivity) {
+        val reload = getToken(key)
+        if (reload != "empty") {
+            Log.i("reload", reload)
+            activity.startActivityWithFinish(MainActivity::class.java)
+        }
+    }
+
+    fun forcedLogout(activity: BaseActivity) {
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+        activity.startActivity(LoginActivity::class.java)
+        activity.finishAffinity()
+    }
 }

@@ -14,7 +14,6 @@ import com.example.getcontents.R
 import com.example.getcontents.assignment.AssignmentInterface
 import com.example.getcontents.assignment.AssignmentResult
 import com.example.getcontents.databinding.ActivityMainBinding
-import com.example.getcontents.extensions.Extensions.startActivityWithFinish
 import com.example.getcontents.network.dto.UnitsDto
 import com.example.getcontents.network.dto.UserDto
 import com.example.getcontents.storage.SharedPref
@@ -26,7 +25,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.math.log
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var token: String
     val gson = Gson()
@@ -46,6 +45,9 @@ class MainActivity : AppCompatActivity() {
             binding.userNameTxtView.text = ("${user.name} 님,")
         }
         getAssignment()
+        binding.logoutBtn.setOnClickListener {
+            sharedPref.forcedLogout(this)
+        }
 
 
     }
@@ -78,12 +80,20 @@ class MainActivity : AppCompatActivity() {
                     }
                     Log.e("dtoList", "${dtoList}")
                 }else {
-                    //과제가 없을 경우
-                    val dialog = AlertDialog.Builder(this@MainActivity)
-                    dialog.setTitle("과제가 없습니다.")
-                    dialog.setMessage("담당자에게 문의해주세요.")
-                    dialog.setPositiveButton("확인",dialogListener)
-                    dialog.show()
+                    if (response.body() == null){
+                        //과제가 없을 경우
+                        val dialog = AlertDialog.Builder(this@MainActivity)
+                        dialog.setTitle("과제가 없습니다.")
+                        dialog.setMessage("담당자에게 문의해주세요.")
+                        dialog.setPositiveButton("확인",dialogListener)
+                        dialog.show()
+                    }else{
+                        val dialog = AlertDialog.Builder(this@MainActivity)
+                        dialog.setTitle("로그인 만료")
+                        dialog.setMessage("로그인을 다시 해주세요.")
+                        dialog.setPositiveButton("확인",dialogListener)
+                        dialog.show()
+                    }
                 }
 
             }
@@ -114,7 +124,7 @@ class MainActivity : AppCompatActivity() {
 
     fun toast_p() {
         Toast.makeText(this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show()
-        startActivityWithFinish(LoginActivity::class.java)
+        sharedPref.forcedLogout(BaseActivity.instance)
     }
     var dialogListener = object: DialogInterface.OnClickListener{
         override fun onClick(dialog: DialogInterface?, which: Int) {

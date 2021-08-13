@@ -50,6 +50,19 @@
             />
 
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/logoutBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_60"
+            android:layout_marginBottom="@dimen/dp_64"
+            android:fontFamily="@font/nanum_square_b"
+            android:gravity="center"
+            android:text="로그아웃"
+            android:textColor="#EDDDAC"
+            android:textSize="@dimen/sp_36"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cardLayout"

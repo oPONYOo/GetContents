@@ -30,11 +30,11 @@ class RecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         context = parent.context
         val binding = RecycleritemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return itemViewHolder(binding)
+        return ItemViewHolder(binding)
 
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val itemHolder = holder as itemViewHolder
+        val itemHolder = holder as ItemViewHolder
         val item = items[position]
         itemHolder.bind(item)
     }
@@ -44,7 +44,7 @@ class RecyclerViewAdapter(
 
     }
 
-    inner class itemViewHolder(var binding: RecycleritemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ItemViewHolder(var binding: RecycleritemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: UnitsDto){
             Log.e("item", item.title)
             binding.nameTxtView.text = item.title

@@ -21,7 +21,6 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="@dimen/dp_100"
             android:textSize="@dimen/sp_100"
-
             android:layout_marginStart="@dimen/dp_20"
             android:fontFamily="@font/maplestory_oft_bold"
             android:textColor="#3FB5B5"/>
@@ -42,7 +41,9 @@
                 android:id="@+id/textInputTxtView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="아이디를 입력해주세요."/>
+                android:hint="아이디를 입력해주세요."
+                android:imeOptions="actionNext"
+                android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
