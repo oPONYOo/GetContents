@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="itemList">
+        <item>기억력</item>
+        <item>계산력</item>
+        <item>추리력</item>
+        <item>판단력</item>
+        <item>시공간</item>
+    </string-array>
+
+</resources>

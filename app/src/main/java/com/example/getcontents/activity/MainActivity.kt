@@ -1,5 +1,6 @@
 package com.example.getcontents.activity
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import com.example.getcontents.App
 import com.example.getcontents.App.Companion.sharedPref
 import com.example.getcontents.R
 import com.example.getcontents.assignment.AssignmentInterface
@@ -24,6 +26,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.math.log
+import kotlin.reflect.KParameter
 
 class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -38,6 +41,7 @@ class MainActivity : BaseActivity() {
             lifecycleOwner = this@MainActivity
             activity = this@MainActivity
         }
+
         token = sharedPref.getToken(SharedPref.PREF_KEEP_LOGIN_TOKEN)
         Log.e("tok", token)
         sharedPref.getString(SharedPref.PREF_USER_INFO)?.let {

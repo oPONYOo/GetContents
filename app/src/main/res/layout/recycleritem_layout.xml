@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/border_img_border"
-        android:layout_margin="@dimen/dp_20">
+        android:layout_margin="@dimen/dp_8">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgView"

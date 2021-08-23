@@ -4,6 +4,7 @@ import TokenAuthenticator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.example.getcontents.App
@@ -39,6 +40,7 @@ class LoginActivity : BaseActivity() {
             lifecycleOwner = this@LoginActivity
         }
         binding.loginBtn.setOnClickListener(this::onClick)
+        binding.textInputTxtView2.setOnKeyListener(onKeyListener)
         sharedPref.checkToken(SharedPref.PREF_KEEP_LOGIN_TOKEN, this)
     }
 
@@ -131,6 +133,13 @@ class LoginActivity : BaseActivity() {
         //.addNetworkInterceptor(AuthenticationInterceptor()) 헤더설정하는 Interceptor ,, 현재는 사용 x
         .connectTimeout(30, TimeUnit.SECONDS)
         .build()
+    private var onKeyListener: View.OnKeyListener =
+        View.OnKeyListener { _, keyCode, event ->
+            if (event!!.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                binding.loginBtn.performClick()
+            }
+            false
+        }
     companion object {
         private const val BASE_URL = "https://api.super-brain.co.kr/"
     }

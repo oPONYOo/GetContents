@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.activity.LoginActivity">
+
     <data>
 
         <import type="android.view.View" />
@@ -12,43 +13,50 @@
             type="com.example.getcontents.activity.ContentsListActivity" />
 
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/black">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:fitsSystemWindows="true">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_350"
-                android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleTextAppearance="@android:color/transparent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:tabIconTint="@color/white"
+                app:tabIndicatorColor="@color/white"
+                app:tabSelectedTextColor="#B0FFFF"
+                app:tabTextColor="@color/white">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    app:layout_collapseMode="parallax"
-                    android:src="@drawable/cosmos"
-                    android:contentDescription="List"
-                    android:scaleType="centerCrop"
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/unFilteredList"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_350" />
+                    android:layout_height="match_parent"
+                    android:text="ALL"
+                    android:icon="@drawable/ic_baseline_person_24"/>
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/filteredList1"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:title="List"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                    android:layout_height="match_parent"
+                    android:text="LEARNING"
+                    android:icon="@drawable/ic_baseline_psychology_24"/>
 
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/filteredList2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:icon="@drawable/ic_baseline_videogame_asset_24"
+                    android:text="GAME"/>
+            </com.google.android.material.tabs.TabLayout>
+
         </com.google.android.material.appbar.AppBarLayout>
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -68,18 +76,13 @@
                     android:layout_height="match_parent"
                     android:nestedScrollingEnabled="false"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    tools:listitem="@layout/recycleritem_layout"/>
+                    tools:listitem="@layout/recycleritem_layout"
+                    android:clipToPadding="false"
+                    android:clipChildren="false"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:src="@drawable/ic_baseline_add_24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:elevation="6dp"
-            app:pressedTranslationZ="12dp"
-            app:layout_anchor="@id/appbarLayout"
-            app:layout_anchorGravity="bottom|right|end"
-            />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 </layout>

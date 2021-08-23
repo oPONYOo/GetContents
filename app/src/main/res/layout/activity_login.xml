@@ -43,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:hint="아이디를 입력해주세요."
                 android:imeOptions="actionNext"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:nextFocusDown="@id/textInputTxtView2"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,6 +67,9 @@
                 android:layout_height="wrap_content"
                 android:hint="비밀번호를 입력해주세요."
                 android:inputType="textPassword"
+                android:singleLine="true"
+                android:nextFocusUp="@id/textInputTxtView1"
+                android:nextFocusDown="@id/loginBtn"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,7 +85,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/dp_200"
-            android:background="@drawable/btn_color"/>
+            android:background="@drawable/btn_color"
+            android:nextFocusUp="@id/textInputTxtView2"/>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

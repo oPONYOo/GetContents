@@ -1,20 +1,17 @@
 package com.example.getcontents.activity
 
-import android.app.ActivityOptions
-import android.content.Intent
-import android.os.Build
+import android.content.Context
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.getcontents.R
 import com.example.getcontents.adapter.RecyclerViewAdapter
 import com.example.getcontents.databinding.ActivityContentsListBinding
-import com.example.getcontents.listener.OnSingleItemTouchListener
 import com.example.getcontents.network.dto.UnitsDto
+import com.google.android.material.tabs.TabLayout
+
 
 class ContentsListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityContentsListBinding
@@ -25,6 +22,7 @@ class ContentsListActivity : AppCompatActivity() {
     private var isNext = false // 다음 페이지 유무
     private var page = 0       // 현재 페이지
     private var limit = 10     // 한 번에 가져올 아이템 수
+    private var context:Context? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +37,6 @@ class ContentsListActivity : AppCompatActivity() {
         mMapLayoutManager = GridLayoutManager(this, 1)
         mListAdapter = RecyclerViewAdapter(dtoList)
         binding.recyclerView.adapter = mListAdapter
-        binding.toolbar.title = "과제 리스트"
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -53,9 +50,32 @@ class ContentsListActivity : AppCompatActivity() {
                 }
             }
         })
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                Log.e("TAG", "${tab!!.position}")
+                when(tab.position){
+                    0 ->{
+                        mListAdapter.filter.filter("")
+                    }
+                    1 -> {
+                        mListAdapter.filter.filter("LEARNING")
+                    }
+                    2 -> {
+                        mListAdapter.filter.filter("GAME")
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                tab!!.view.setBackgroundColor(Color.TRANSPARENT)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
+
 
     }
-
 
     companion object {
         private const val BASE_URL = "https://api.super-brain.co.kr/"
