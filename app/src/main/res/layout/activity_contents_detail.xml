@@ -12,60 +12,111 @@
             type="com.example.getcontents.activity.ContentsDetailActivity" />
 
     </data>
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:background="@color/black"
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/black">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar_layout"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar_layout"
-                app:collapsedTitleGravity="center"
-                app:collapsedTitleTextAppearance="@style/CollapsingToolbarLayoutTitle"
-                app:expandedTitleTextAppearance="@style/CollapsingToolbarLayoutTitle"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            android:layout_height="@dimen/dp_400"
+            android:contentDescription="poster"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:titleTextColor="@color/white" />
-                <ImageView
-                    android:id="@+id/imgView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="poster" />
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/titleTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/imgView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginStart="@dimen/dp_20"
+            android:fontFamily="@font/nanum_square_eb"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_40"
+            tools:text="기억을 돕는 8가지 지혜"
+            />
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nested_scroll_view"
-            android:fillViewport="true"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/typeTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_70"
+            app:layout_constraintTop_toBottomOf="@+id/titleTxtView"
+            app:layout_constraintStart_toStartOf="@+id/titleTxtView"
+            android:layout_marginTop="@dimen/dp_30"
+            android:background="@drawable/border_back_blue"
+            android:fontFamily="@font/nanum_square_eb"
+            android:textColor="#B0FFFF"
+            android:textSize="@dimen/sp_30"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_15"
+            android:paddingEnd="@dimen/dp_15"
+            tools:text="GAME"/>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:id="@+id/desTxtView"
-                        android:layout_margin="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Description"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/sectionTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_70"
+            app:layout_constraintTop_toTopOf="@+id/typeTxtView"
+            app:layout_constraintStart_toEndOf="@+id/typeTxtView"
+            android:layout_marginStart="@dimen/dp_10"
+            android:background="@drawable/border_back_blue"
+            android:fontFamily="@font/nanum_square_eb"
+            android:textColor="#B0FFFF"
+            android:textSize="@dimen/sp_30"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_15"
+            android:paddingEnd="@dimen/dp_15"
+            tools:text="COGNITION"/>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/detailTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_70"
+            app:layout_constraintTop_toTopOf="@+id/typeTxtView"
+            app:layout_constraintStart_toEndOf="@+id/sectionTxtView"
+            android:layout_marginStart="@dimen/dp_10"
+            android:background="@drawable/border_back_blue"
+            android:fontFamily="@font/nanum_square_eb"
+            android:textColor="#B0FFFF"
+            android:textSize="@dimen/sp_30"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_15"
+            android:paddingEnd="@dimen/dp_15"
+            tools:text="COGNITION"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/scoreTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사용자 별점/0점"
+            android:fontFamily="@font/nanum_square_b"
+            app:layout_constraintStart_toStartOf="@+id/titleTxtView"
+            app:layout_constraintTop_toBottomOf="@+id/detailTxtView"
+            android:layout_marginTop="@dimen/dp_20"
+            android:textSize="@dimen/sp_26"
+            android:textColor="@color/white"/>
+
+
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/scoreTxtView"
+            app:layout_constraintTop_toBottomOf="@+id/scoreTxtView"
+            android:rating="0"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:isIndicator="false"
+            android:progressTint="#B0FFFF"
+            android:progressBackgroundTint="#C5CDCD"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

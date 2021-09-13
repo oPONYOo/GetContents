@@ -39,8 +39,16 @@ class SharedPref(context: Context) {
         editor.apply()
     }
 
+    fun putInt(key: String, value: Int) {
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, value)
+        editor.apply()
+    }
+
+
     fun getString(key: String) = sharedPreferences!!.getString(key, null)
 
+    fun getInt(key: String) = sharedPreferences!!.getInt(key, 0)
     fun getToken(key: String): String = sharedPreferences!!.getString(key, "empty")!!
 
 

@@ -5,26 +5,20 @@ import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.getcontents.R
 import com.example.getcontents.activity.ContentsDetailActivity
-import com.example.getcontents.activity.LoginActivity
 import com.example.getcontents.databinding.ItemLoadingBinding
 import com.example.getcontents.databinding.RecycleritemLayoutBinding
-import com.example.getcontents.extensions.Extensions.startActivityWithFinish
 import com.example.getcontents.network.dto.UnitsDto
 import kotlin.collections.ArrayList
 
-class RecyclerViewAdapter(
-    private var items : ArrayList<UnitsDto>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable
+class RecyclerViewAdapter(items: ArrayList<UnitsDto?>?) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable
 {
     companion object {
         private const val TYPE_ITEM = 0
@@ -33,18 +27,28 @@ class RecyclerViewAdapter(
     private var context:Context? = null
     private var unFilteredList = items
     private var filteredList = items
-    override fun getItemCount(): Int = filteredList.size
+    override fun getItemCount(): Int {
+        return if (filteredList == null){
+            Log.e("zero", "z")
+            0
+        }else{
+            Log.e("nozero", "$filteredList?.size")
+            filteredList?.size!!
+        }
+
+    }
+
 
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charString = constraint.toString()
-                filteredList = if (charString.isEmpty()) { //⑶
+                filteredList = if (charString.isEmpty()) {
                     unFilteredList
                 } else {
-                    var filteringList = ArrayList<UnitsDto>()
-                    for (item in unFilteredList) {
-                        if (item.type == charString) filteringList.add(item)
+                    val filteringList = ArrayList<UnitsDto?>()
+                    for (item in unFilteredList!!) {
+                        if (item!!.type == charString) filteringList.add(item)
                     }
                     filteringList
                 }
@@ -54,26 +58,53 @@ class RecyclerViewAdapter(
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredList = results?.values as ArrayList<UnitsDto>
+                filteredList = results?.values as ArrayList<UnitsDto?>?
                 notifyDataSetChanged()
             }
         }
+
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        Log.e("filter", "${filteredList}")
+        Log.e("posss", "${filteredList?.get(position)} ")
+        Log.e("size", "${filteredList?.size}")
+        Log.e("position", "$position")
+        return when (filteredList?.get(position)) {
+            null -> TYPE_LOADING
+            else -> TYPE_ITEM
+
+        }
+    }
+
+    fun updateItem(list:ArrayList<UnitsDto?>?){
+        this.filteredList = list
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         context = parent.context
-        val binding = RecycleritemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        Log.e("viewT", "$viewType")
+        if (viewType == TYPE_ITEM){
+            val binding = RecycleritemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return ItemViewHolder(binding)
+        }else{
+            val binding = ItemLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return LoadingViewHolder(binding)
+        }
 
-        return ItemViewHolder(binding)
 
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val itemHolder = holder as ItemViewHolder
-        val item = filteredList[position]
-        itemHolder.bind(item)
+        if (holder is ItemViewHolder){
+            val item = filteredList?.get(position)
+            val itemHolder = holder as ItemViewHolder
+            itemHolder.bind(item!!)
+        }else if (holder is LoadingViewHolder){
+
+        }
     }
     // 아이템뷰에 프로그레스바가 들어가는 경우
-    inner class LoadingViewHolder(private val binding: ItemLoadingBinding) :
+    inner class LoadingViewHolder(var binding: ItemLoadingBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
     }

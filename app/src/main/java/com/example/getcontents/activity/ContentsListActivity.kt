@@ -4,25 +4,30 @@ import android.content.Context
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
-import androidx.recyclerview.widget.GridLayoutManager
+import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.getcontents.adapter.RecyclerViewAdapter
 import com.example.getcontents.databinding.ActivityContentsListBinding
+import com.example.getcontents.listener.EndlessRecyclerViewScrollListener
 import com.example.getcontents.network.dto.UnitsDto
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.*
+import java.lang.Runnable
 
 
 class ContentsListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityContentsListBinding
     private var dtoList :ArrayList<UnitsDto> = ArrayList()
-    private lateinit var mMapLayoutManager: GridLayoutManager
+    private var items: ArrayList<UnitsDto?> = ArrayList()
+    private lateinit var mMapLayoutManager: LinearLayoutManager
     private lateinit var mListAdapter: RecyclerViewAdapter
-    private var totalCount = 0 // 전체 아이템 개수
-    private var isNext = false // 다음 페이지 유무
-    private var page = 0       // 현재 페이지
-    private var limit = 10     // 한 번에 가져올 아이템 수
-    private var context:Context? = null
+    private lateinit var mRecyclerView: RecyclerView
+    val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
+    private var isLoading =false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,24 +37,10 @@ class ContentsListActivity : AppCompatActivity() {
             lifecycleOwner = this@ContentsListActivity
             activity = this@ContentsListActivity
         }
-        dtoList= intent.getSerializableExtra(EXTRA_TITLE) as ArrayList<UnitsDto>
-        Log.e("dto", "$dtoList")
-        mMapLayoutManager = GridLayoutManager(this, 1)
-        mListAdapter = RecyclerViewAdapter(dtoList)
-        binding.recyclerView.adapter = mListAdapter
-        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
 
-                val lastVisibleItemPosition = (recyclerView.layoutManager as GridLayoutManager?)!!.findLastCompletelyVisibleItemPosition() // 화면에 보이는 마지막 아이템의 position
-                val itemTotalCount = recyclerView.adapter!!.itemCount - 1 // 어댑터에 등록된 아이템의 총 개수 -1
-
-                // 스크롤이 끝에 도달했는지 확인
-                if (lastVisibleItemPosition == itemTotalCount) {
-                    Log.e("finish", "$lastVisibleItemPosition")
-                }
-            }
-        })
+        setData()
+        initAdapter()
+        initScrollListener()
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 Log.e("TAG", "${tab!!.position}")
@@ -76,7 +67,85 @@ class ContentsListActivity : AppCompatActivity() {
 
 
     }
+    private fun setData(){
+        dtoList= intent.getSerializableExtra(EXTRA_TITLE) as ArrayList<UnitsDto>
+        Log.e("dto", "$dtoList")
+        if(dtoList.size<10){
+            for (i in 0 until dtoList.size){
+                items.add(dtoList[i])
+            }
+        }else{
+            for (i in 0 until 10){
+                items.add(dtoList[i])
+            }
+        }
 
+        Log.e("items", "${items}")
+    }
+
+    private fun initAdapter(){
+        mListAdapter = RecyclerViewAdapter(items)
+        mMapLayoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = mListAdapter
+
+    }
+    private fun initScrollListener(){
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                // 스크롤이 끝에 도달했는지 확인
+                if(!isLoading){
+                    if ((recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition() == items.size - 1){
+                        Log.e("true", "True")
+                        moreItems()
+                        isLoading =  true
+                    }
+
+                }
+            }
+        })
+    }
+
+
+    fun moreItems(){
+        mRecyclerView = binding.recyclerView
+
+        val runnable = Runnable {
+            items.add(null)
+            mListAdapter.notifyItemInserted(items.size -1)
+            Log.e("null", "${items.size}")
+        }
+        mRecyclerView.post(runnable)
+
+        CoroutineScope(mainDispatcher).launch {
+            delay(2000)
+            val runnable2=  Runnable{
+                items.removeAt(items.size - 1)
+                val scrollPosition = items.size
+                mListAdapter.notifyItemRemoved(scrollPosition)
+                var currentSize = scrollPosition
+                var nextLimit = currentSize+10
+                Log.e("hello", "${nextLimit}")
+                if (currentSize < dtoList.size-10){
+                    while (currentSize-1<nextLimit){
+                        items.add(dtoList[currentSize])
+                        currentSize++
+                    }
+                }else{
+                    while (currentSize!=dtoList.size){
+                        items.add(dtoList[currentSize])
+                        currentSize++
+                    }
+                }
+                Log.e("full", "${items.size}")
+                mListAdapter.updateItem(items)
+                isLoading = false
+                Log.e("curr", "${items}")
+        }
+            runnable2.run()
+        }
+    }
     companion object {
         private const val BASE_URL = "https://api.super-brain.co.kr/"
         private const val EXTRA_PROGRESS = "EXTRA_PROGRESS"

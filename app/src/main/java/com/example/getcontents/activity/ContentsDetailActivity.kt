@@ -9,10 +9,13 @@ import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.getcontents.App
 import com.example.getcontents.R
 import com.example.getcontents.databinding.ActivityContentsDetailBinding
 import com.example.getcontents.databinding.ActivityContentsListBinding
 import com.example.getcontents.network.dto.UnitsDto
+import com.example.getcontents.network.dto.UserDto
+import com.example.getcontents.storage.SharedPref
 
 class ContentsDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityContentsDetailBinding
@@ -32,7 +35,10 @@ class ContentsDetailActivity : AppCompatActivity() {
         detail = intent.getStringExtra(EXTRA_DETAIL).toString()
         Log.e("title", title.toString())
         Log.e("img", img.toString())
-        binding.toolbar.title = title
+        binding.titleTxtView.text = title
+        binding.typeTxtView.text = type
+        binding.sectionTxtView.text = section
+        binding.detailTxtView.text = detail
         Glide.with(this)
             .load(img)
             .apply(RequestOptions.bitmapTransform(RoundedCorners(15)))
@@ -42,19 +48,23 @@ class ContentsDetailActivity : AppCompatActivity() {
         Log.e("type", type.toString())
         Log.e("section", section.toString())
         Log.e("detail", detail.toString())
+
+        if (App.sharedPref.getInt(EXTRA_SCORE).toString() !="empty"){
+            App.sharedPref.getInt(EXTRA_SCORE)?.let {
+                binding.scoreTxtView.text = ("사용자 별점/${App.sharedPref.getInt(EXTRA_SCORE)}점")
+            }
+        }
+        Log.e("score", "${App.sharedPref.getInt(EXTRA_SCORE)}")
+
+        binding.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            binding.scoreTxtView.text = ("사용자 별점/${rating}점")
+            App.sharedPref.putInt(
+                EXTRA_SCORE,
+                rating.toInt()
+            )
+        }
     }
-//    private fun setData(){
-//        binding.toolbar.title = title
-//        binding.desTxtView.text = detail
-//
-//        Glide.with(context!!)
-//            .load(img)
-//            .apply(RequestOptions.bitmapTransform(RoundedCorners(15)))
-//            .thumbnail(0.5f)
-//            .into(binding.imgView)
-//        binding.imgView.clipToOutline = true
-//
-//    }
+
     companion object {
         private const val BASE_URL = "https://api.super-brain.co.kr/"
         private const val EXTRA_PROGRESS = "EXTRA_PROGRESS"
@@ -67,6 +77,7 @@ class ContentsDetailActivity : AppCompatActivity() {
         private const val EXTRA_TITLE = "EXTRA_TITLE"
         private const val EXTRA_IMAGE = "EXTRA_IMAGE"
         private const val EXTRA_DETAIL = "EXTRA_DETAIL"
+        private const val EXTRA_SCORE = "EXTRA_SCORE"
 
     }
 }
